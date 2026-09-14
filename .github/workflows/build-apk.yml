@@ -20,7 +20,7 @@ jobs:
 
       - name: Unzip project
         run: |
-          unzip -q "IOSLauncher(1).zip" -d .
+          unzip -q "IOSLauncher_GitHub_Build.zip" -d .
 
       - name: Build APK
         working-directory: IOSLauncher
