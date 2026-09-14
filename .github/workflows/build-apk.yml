@@ -18,11 +18,18 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+      - name: Unzip project
+        run: |
+          unzip -q "IOSLauncher(1).zip" -d .
+
       - name: Build APK
-        run: gradle assembleDebug --no-daemon
+        working-directory: IOSLauncher
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: IOSLauncher-debug-apk
-          path: '**/build/outputs/apk/debug/*.apk'
+          path: IOSLauncher/app/build/outputs/apk/debug/*.apk
