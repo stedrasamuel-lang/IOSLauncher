@@ -30,10 +30,14 @@ jobs:
           echo "Project found: $PROJECT"
           echo "PROJECT=$PROJECT" >> "$GITHUB_ENV"
 
-      - name: Build APK
+      - name:       - name: Build APK
         run: |
-          chmod +x "$PROJECT/gradlew"
-          "$PROJECT/gradlew" assembleDebug --no-daemon
+          cd "$PROJECT"
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+        run: 
+          
+          
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
