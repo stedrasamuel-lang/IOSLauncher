@@ -18,18 +18,24 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Unzip project
+      - name: Unzip Android project
         run: |
-          unzip -q "IOSLauncher_GitHub_Build.zip" -d .
+          mkdir extracted
+          unzip -q "IOSLauncher_GitHub_Build.zip" -d extracted
+
+      - name: Find Gradle project
+        run: |
+          PROJECT=$(find extracted -name gradlew -type f -print -quit | xargs dirname)
+          echo "Project found: $PROJECT"
+          echo "PROJECT=$PROJECT" >> "$GITHUB_ENV"
 
       - name: Build APK
-        working-directory: IOSLauncher
         run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          chmod +x "$PROJECT/gradlew"
+          "$PROJECT/gradlew" assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: IOSLauncher-debug-apk
-          path: IOSLauncher/app/build/outputs/apk/debug/*.apk
+          path: '**/build/outputs/apk/debug/*.apk'
